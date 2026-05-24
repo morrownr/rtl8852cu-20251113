@@ -790,9 +790,8 @@ _adapter *rtw_usb_primary_adapter_init(struct dvobj_priv *dvobj,
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 33))
 	if (usb_autopm_get_interface(pusb_intf) < 0)
 		RTW_INFO("can't get autopm:\n");
-#endif
-#ifdef CONFIG_BTC
-	dvobj_to_pwrctl(dvobj)->autopm_cnt = 1;
+	else
+		dvobj_to_pwrctl(dvobj)->autopm_cnt = 1;
 #endif
 
 	/* get mac addr */
@@ -822,9 +821,7 @@ static void rtw_usb_primary_adapter_deinit(_adapter *padapter)
 {
 	RTW_INFO(FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(padapter));
 
-#ifdef CONFIG_BTC
 	if (1 == adapter_to_pwrctl(padapter)->autopm_cnt) {
-		struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 		struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
 		PUSB_DATA usb_data = dvobj_to_usb(dvobj);
 
@@ -837,7 +834,6 @@ static void rtw_usb_primary_adapter_deinit(_adapter *padapter)
 #endif
 		adapter_to_pwrctl(padapter)->autopm_cnt--;
 	}
-#endif
 
 	rtw_free_drv_sw(padapter);
 

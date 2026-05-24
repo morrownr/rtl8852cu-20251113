@@ -47,8 +47,8 @@ struct pwrctrl_priv {
 	u8		bInSuspend;
 #ifdef CONFIG_BTC
 	u8		bAutoResume;
-	u8		autopm_cnt;
 #endif
+	u8		autopm_cnt;
 	u8		bSupportRemoteWakeup;
 	u8		wowlan_ap_mode;
 	u8		wowlan_mode;
