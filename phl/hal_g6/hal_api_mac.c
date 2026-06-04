@@ -2387,7 +2387,6 @@ bool rtw_hal_mac_reg_chk(struct rtw_hal_com_t *hal_com, u32 addr)
 			rst = false;
 			PHL_ERR("%s failed - addr(0x%08x) is err code(%d)\n",
 				__func__, addr, mac_rst);
-			_os_warn_on(1);
 		}
 	}
 
