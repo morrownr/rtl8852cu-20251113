@@ -72,7 +72,7 @@ Note: Additional CPU architectures may work but have not been tested.
 ### Compatible Kernels
 
 - Kernels: 5.15 - 6.14 (Realtek)
-- Kernels: 6.15 - 7.0  (community support)
+- Kernels: 6.15 - 7.1  (community support)
 
 Note: Kernel 5.15 and later required for 6 GHz operation.
 

@@ -6764,8 +6764,10 @@ s32 core_tx_update_pkt(_adapter *padapter, struct xmit_frame *pxframe, struct sk
 	PHLTX_LOG;
 
 //rtw_phl_tx todo, BR EXT
+#ifdef CONFIG_BR_EXT
 	if (core_br_client_tx(padapter, pxframe, pskb) == FAIL)
 		return FAIL;
+#endif
 
 	return SUCCESS;
 }
