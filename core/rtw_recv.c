@@ -5789,6 +5789,11 @@ exit:
 
 	pmlmepriv = &(prframe->u.hdr.adapter)->mlmepriv;
 	if (check_fwstate(pmlmepriv, WIFI_MONITOR_STATE)) {
+		/* A frame not addressed to a local interface never had a link
+		 * assigned above, and the monitor path dereferences it.
+		 */
+		if (!prframe->u.hdr.adapter_link)
+			prframe->u.hdr.adapter_link = GET_PRIMARY_LINK(prframe->u.hdr.adapter);
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 24))
 			recv_frame_monitor(prframe->u.hdr.adapter, prframe, rx_req);
 #endif
