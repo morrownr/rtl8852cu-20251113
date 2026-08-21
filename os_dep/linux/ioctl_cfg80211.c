@@ -11178,6 +11178,7 @@ static void rtw_cfg80211_init_vht_capab(_adapter *padapter,
 #endif /* defined(CONFIG_80211AC_VHT) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 6, 0)) */
 
 #if defined(CONFIG_80211AX_HE) && (defined(CPTCFG_VERSION) || (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 20, 0)))
+extern int rtw_6g_ap;
 static int rtw_cfg80211_init_he_capab(_adapter *padapter,
 	struct ieee80211_sband_iftype_data *sta_iface_data,
 	enum nl80211_iftype iftype, struct phy_cap_t *phy_cap,
@@ -11201,8 +11202,9 @@ static int rtw_cfg80211_init_he_capab(_adapter *padapter,
 		return _FAIL;
 
 #if CONFIG_IEEE80211_BAND_6GHZ
-	/* forbid before 6G AP regulatory ready */
-	if (rtw_txpwr_hal_is_txpwr_limit_needed(adapter_to_dvobj(padapter))
+	/* publish 6G AP HE caps only when 6G AP is opted in (see rtw_6g_ap) */
+	if (!rtw_6g_ap
+		&& rtw_txpwr_hal_is_txpwr_limit_needed(adapter_to_dvobj(padapter))
 		&& band == NL80211_BAND_6GHZ && iftype == NL80211_IFTYPE_AP)
 		return _FAIL;
 #endif
