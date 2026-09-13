@@ -529,6 +529,7 @@ static void rtw_regd_apply_dfs_flags(struct get_chplan_resp *chplan, bool rtnl_l
 		rtnl_unlock();
 }
 
+extern int rtw_6g_ap;
 static u8 wiphy_chan_get_rtw_ch_flags(struct ieee80211_channel *chan)
 {
 	u8 flags;
@@ -553,9 +554,13 @@ static u8 wiphy_chan_get_rtw_ch_flags(struct ieee80211_channel *chan)
 		flags |= RTW_CHF_NO_HT40L;
 	#endif
 	#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 9, 0))
-	if (chan->flags & IEEE80211_CHAN_NO_80MHZ)
+	/* with 6G AP enabled, do not inherit the kernel regdb 6G width caps
+	 * (some regdomains cap 6G to 20MHz); permit wide 6G channels */
+	if (!(rtw_6g_ap && chan->band == NL80211_BAND_6GHZ)
+	    && (chan->flags & IEEE80211_CHAN_NO_80MHZ))
 		flags |= RTW_CHF_NO_80MHZ;
-	if (chan->flags & IEEE80211_CHAN_NO_160MHZ)
+	if (!(rtw_6g_ap && chan->band == NL80211_BAND_6GHZ)
+	    && (chan->flags & IEEE80211_CHAN_NO_160MHZ))
 		flags |= RTW_CHF_NO_160MHZ;
 	#endif
 

@@ -4271,13 +4271,15 @@ static void rtw_rfctl_regd_req_sel_and_status_update(struct rf_ctl_t *rfctl)
 
 #ifdef CONFIG_AP_MODE
 #if CONFIG_AP_REGU_FORBID
+extern int rtw_6g_ap;
 bool rtw_rfctl_is_regu_forbid_bss(struct rf_ctl_t *rfctl, enum band_type band)
 {
 	if (!rtw_txpwr_hal_is_txpwr_limit_needed(rfctl_to_dvobj(rfctl)))
 		return false;
 
-	/* forbid before 6G AP regulatory ready */
-	return band == BAND_ON_6G;
+	/* 6G AP regulatory (AFC/power category) is unimplemented; only allow a
+	 * 6G BSS when explicitly opted in via rtw_6g_ap (LPI indoor regions). */
+	return band == BAND_ON_6G && !rtw_6g_ap;
 }
 #endif
 
