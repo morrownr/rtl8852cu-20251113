@@ -298,6 +298,10 @@ MODULE_PARM_DESC(rtw_vht_rx_mcs_map, "VHT RX MCS map");
 #ifdef CONFIG_80211AX_HE
 int rtw_he_enable = 1; /* 0:disable, 1:enable, 2:force auto enable */
 module_param(rtw_he_enable, int, 0644);
+
+int rtw_6g_ap = 0; /* 0:disable, 1:enable 6GHz AP mode (LPI indoor only; no AFC) */
+module_param(rtw_6g_ap, int, 0644);
+MODULE_PARM_DESC(rtw_6g_ap, "Enable 6GHz AP mode (default 0). Only enable where LPI indoor 6GHz operation is permitted without AFC (e.g. GB/EU); AFC/power-category enforcement is not implemented.");
 #endif
 
 int rtw_lowrate_two_xmit = 1;/* Use 2 path Tx to transmit MCS0~7 and legacy mode */
