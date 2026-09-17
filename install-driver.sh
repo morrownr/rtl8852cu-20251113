@@ -30,6 +30,10 @@
 #
 # $ shellcheck install-driver.sh
 #
+# To check for object files that clean should delete:
+#
+# $ find . \( -name '*.orig' -o -name '*.o' \) -ls
+#
 # Copyright(c) 2026 Nick Morrow
 #
 # This program is free software; you can redistribute it and/or modify
@@ -42,7 +46,7 @@
 # GNU General Public License for more details.
 
 SCRIPT_NAME="install-driver.sh"
-SCRIPT_VERSION="20260216"
+SCRIPT_VERSION="20260916"
 
 MODULE_NAME="8852cu"
 
@@ -260,6 +264,9 @@ if ! command -v make >/dev/null 2>&1; then
 	exit 1
 fi
 
+# ensure directory is clean of files from manual compilation
+#make clean >/dev/null 2>&1
+
 # check to see if the correct header files are installed
 # - problem with fedora 40 reported
 if [ ! -d "/lib/modules/$(uname -r)/build" ]; then
@@ -359,6 +366,7 @@ echo
 
 #echo "Updating driver."
 #git pull
+
 echo "Starting installation:"
 echo "Copying ${OPTIONS_FILE} to /etc/modprobe.d"
 cp -f ${OPTIONS_FILE} /etc/modprobe.d
@@ -378,7 +386,7 @@ if ! command -v dkms >/dev/null 2>&1; then
 		echo "Please report this error."
 		echo "Please copy and post the following items into the problem report."
 		echo "    -all screen output from install-driver.sh"
-		echo "    -the contents of make.log as mentioned 3 lines above"
+		echo "    -the contents of make.log as mentioned a few lines above"
 		echo "You should run the following before reattempting installation."
 		echo "$ sudo ./uninstall-driver.sh"
 		exit $RESULT
